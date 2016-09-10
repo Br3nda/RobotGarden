@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText("Gardens");
+            textView.setText(R.string.gardens);
             return rootView;
         }
     }
@@ -198,6 +198,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCompleted(Exception e, List<Garden> gardens) {
             mGardens = gardens;
+        }
+    };
+
+    public void onClickSignout(MenuItem item) {
+        SessionsController.signOut(getApplicationContext(), onSignOut);
+    }
+
+    FutureCallback onSignOut = new FutureCallback() {
+        @Override
+        public void onCompleted(Exception e, Object result) {
+            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivityForResult(loginIntent, 1);
         }
     };
 }
