@@ -19,8 +19,15 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.koushikdutta.async.future.FutureCallback;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import nz.allthethings.android.robotgarden.config.RobotConfig;
 import nz.allthethings.android.robotgarden.controllers.GardensController;
 import nz.allthethings.android.robotgarden.controllers.SessionsController;
+import nz.allthethings.android.robotgarden.models.Garden;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,6 +103,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static class GardensFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText("Gardens");
+            return rootView;
+        }
+    }
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -143,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    GardensController.gardens_by_owner(getApplicationContext(), RobotConfig.owner, onGardenLoad);
+                    return new GardensFragment();
+            }
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
@@ -157,15 +179,22 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    GardensController.index();
-                    return "Gardens#index";
                 case 1:
-                    return "SECTION 2";
+                    return "Gardens#index";
                 case 2:
+                    return "SECTION 2";
+                case 3:
                     return "SECTION 3";
             }
             return null;
         }
     }
+
+    private List<Garden> mGardens;
+    FutureCallback<List<Garden>> onGardenLoad = new FutureCallback<List<Garden>>() {
+        @Override
+        public void onCompleted(Exception e, List<Garden> gardens) {
+            mGardens = gardens;
+        }
+    };
 }

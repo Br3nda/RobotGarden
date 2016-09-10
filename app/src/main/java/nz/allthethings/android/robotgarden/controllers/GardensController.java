@@ -1,37 +1,22 @@
 package nz.allthethings.android.robotgarden.controllers;
 
-public class GardensController {
-    /*
-                                         gardens GET       /gardens(.:format)                                                            gardens#index
-                                             POST      /gardens(.:format)                                                            gardens#create
-                                  new_garden GET       /gardens/new(.:format)                                                        gardens#new
-                                 edit_garden GET       /gardens/:id/edit(.:format)                                                   gardens#edit
-                                      garden GET       /gardens/:id(.:format)                                                        gardens#show
-                                             PATCH     /gardens/:id(.:format)                                                        gardens#update
-                                             PUT       /gardens/:id(.:format)                                                        gardens#update
-                                             DELETE    /gardens/:id(.:format)                                                        gardens#destroy
-                            gardens_by_owner GET       /gardens/owner/:owner(.:format)                                               gardens#index
+import android.content.Context;
 
-     */
-    static public void gardens_by_owner() {
+import com.google.gson.reflect.TypeToken;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
-    }
-    static public void create() {
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-    }
-    static public void New() {
+import nz.allthethings.android.robotgarden.config.RobotConfig;
+import nz.allthethings.android.robotgarden.models.Garden;
 
-    }
-    static public void show(int id) {
-
-    }
-    static public void update(int id) {
-
-    }
-    static public void destroy(int id) {
-
-    }
-    static public void index() {
-
+public class GardensController  {
+    static public void gardens_by_owner(Context context, String owner, FutureCallback<List<Garden>> onGardenLoad) {
+        Ion.with(context)
+                .load(RobotConfig.url + "/gardens/owner/" + owner + ".json")
+                .as(new TypeToken<List<Garden>>(){})
+                .setCallback(onGardenLoad);
     }
 }
