@@ -9,7 +9,7 @@ import com.koushikdutta.ion.Response;
 
 import java.util.concurrent.ExecutionException;
 
-import nz.allthethings.android.robotgarden.RobotConfig;
+import nz.allthethings.android.robotgarden.config.RobotConfig;
 
 public class SessionsController {
     private static final String TAG = "Sessions";
