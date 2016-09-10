@@ -24,6 +24,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import nz.allthethings.android.robotgarden.config.Database;
 import nz.allthethings.android.robotgarden.config.RobotConfig;
 import nz.allthethings.android.robotgarden.controllers.GardensController;
 import nz.allthethings.android.robotgarden.controllers.SessionsController;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Database.setup(getApplicationContext());
 
         if (!SessionsController.isLoggedIn()) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
